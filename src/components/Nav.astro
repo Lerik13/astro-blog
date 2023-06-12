@@ -2,6 +2,8 @@
 import { Icon } from 'astro-icon';
 
 import navData from '../data/navData';
+
+import Link from './Link.astro';
 ---
 
 <nav aria-label="Primary">
@@ -11,44 +13,20 @@ import navData from '../data/navData';
 		</a>
 		<ul>
 		{
-			navData.map((item) => <a href={item.path}>{item.name}</a>)
+			navData.map((item) => (
+				<Link
+					text={item.name}
+					href={item.path}
+					style="primary"
+					isFilled={false}
+					data-navlink
+				/>
+			))
 		}
 		</ul>
 	</div>
 </nav>
 
-<style>
-[aria-label="Primary"] {
-	width: 100%;
-	padding-block: var(--space-xs);
-	background-color: hsl(var(--muted));
-	box-shadow: var(--shadow-sm);
-
-	& ul {
-		display: flex;
-		gap: var(--space-sm);
-	}
-}
-
-.navbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	max-width: 1500px;
-	margin-inline: auto;
-	padding-inline: var(--space-md);
-}
-
-.logomark {
-	display: grid;
-	place-items: center;
-	padding: var(--space-2xs);
-}
-
-[aria-label="Blog pages"] {
-	display: flex;
-	gap: var(--space-sm);
-	justify-content: center;
-}
-</style>
+<script>
+	import "../js/nav.js"
+</script>

@@ -1,15 +1,25 @@
 ---
+import MainLayout from '../layouts/MainLayout.astro';
+
+const foregroundColor = "hsl(10,50%,50%)";
+const isRed = true;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro - Blog</title>
-	</head>
-	<body>
-		<h1>Astro Blog</h1>
-	</body>
-</html>
+<MainLayout title=" My Blog">
+	<h1>My Blog</h1>
+	<p class:list={["big", { red: isRed }]}>Hello <span>world</span>!</p>
+</MainLayout>
+
+<style define:vars={{foregroundColor}}>
+	h1 {
+		font-size: 4rem;
+		color: var(--foregroundColor);
+	}
+
+	.big {
+		font-size: 2rem;
+	}
+	.red {
+		color: red;
+	}
+</style>

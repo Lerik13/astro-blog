@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-
+import Footer from '../components/Footer.astro';
+import Nav from '../components/Nav.astro';
 interface Props {
 	title?: string;
 	description?: string;
@@ -23,8 +24,10 @@ const { title = 'My Astro Blog' , description = "Blog project in Astro" } = Astr
 		<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Permanent+Marker&display=swap" rel="stylesheet">
 	</head>
 	<body>
+		<Nav />
 		<slot>
 			Default Text
 		</slot>
+		<Footer />
 	</body>
 </html>

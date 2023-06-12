@@ -1,0 +1,46 @@
+---
+
+---
+
+<footer>
+	<small>
+		Copyright &copy; <span id="copyright"></span> | All rights reserved
+	</small>
+</footer>
+
+<script>
+	document.querySelector("#copyright").textContent = 
+	new Date()
+		.getFullYear()
+		.toString()
+</script>
+
+<style>
+:where(footer) {
+	width: 100%;
+	text-align: center;
+	padding: var(--space-sm);
+	background-color: hsl(var(--muted));
+	box-shadow: var(--shadow-lg);
+
+	& div {
+		display: grid;
+		place-items: center;
+		max-width: 1500px;
+		margin-inline: auto;
+		gap: var(--space-sm);
+
+		@media --sm {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		& a {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			text-decoration: none;
+		}
+	}
+}
+</style>

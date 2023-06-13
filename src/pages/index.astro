@@ -1,8 +1,31 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import Link from '../components/Link.astro';
 
+import { formatBlogPosts } from '../js/utils';
+const allPosts = await Astro.glob("./blog/*.md");
+const formattedPosts = formatBlogPosts(allPosts, {
+	filterOutDrafts: false,
+	filterOutFuturePosts: false,
+	sortByDate: false,
+	limit: 3
+});
 ---
 
 <MainLayout title=" My Blog">
-	<h1>My Blog</h1>
+	<section class="container" aria-label="New Blog Posts">
+		<h2 class="h1">New Blog Posts</h1>
+		<div class="post-container">
+			{
+				formattedPosts.map((post) => (
+					<PostCard
+						frontmatter={post.frontmatter}
+						url={post.url}
+						tagType="h3"
+					/>
+				))
+			}
+		</div>
+	</section>
 </MainLayout>

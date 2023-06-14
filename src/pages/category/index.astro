@@ -1,0 +1,26 @@
+---
+import { slugify, formatBlogPosts } from '../../js/utils';
+
+import MainLayout from "../../layouts/MainLayout.astro";
+
+
+const allPosts = await Astro.glob("../blog/*.md");
+const formattedPosts = formatBlogPosts(allPosts);
+
+const allCategories = [
+	... new Set( formattedPosts.map((post) => post.frontmatter.category )
+)]
+
+const CategoriesLinks = allCategories.map((category) => slugify(category))
+---
+
+<MainLayout title="Categories">
+	<h1 class="h2">List of Categories:</h1>
+	<ul style="margin-top: 20px;">
+	{
+		allCategories.map((category, i) => <li>
+			<a href={CategoriesLinks[i]}>{category}</a>
+		</li>)
+	}
+	</ul>
+</MainLayout>

@@ -1,8 +1,9 @@
 ---
+import { slugify, formatDate } from "../js/utils";
+
 import { Image } from '@astrojs/image/components';
 import MainLayout from "./MainLayout.astro";
-
-import { slugify, formatDate } from "../js/utils";
+import CategoryCloud from '../components/CategoryCloud.astro';
 
 const { frontmatter } = Astro.props;
 const { title, description, date, category, author, image } = frontmatter;
@@ -35,6 +36,12 @@ const { title, description, date, category, author, image } = frontmatter;
 		<div class="content">
 			<slot />
 		</div>
-		<div class="sidebar"></div>
+		<div class="sidebar">
+		</section>
+			<aside class="container" aria-label="Blog Categories">
+				<h2 class="h3">Blog categories</h2>
+				<CategoryCloud />
+			</aside>
+		</div>
 	</div>
 </MainLayout>

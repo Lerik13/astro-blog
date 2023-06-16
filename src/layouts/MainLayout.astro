@@ -2,13 +2,22 @@
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
 import Nav from '../components/Nav.astro';
+import Seo from '../components/Seo.astro';
 interface Props {
 	title?: string;
 	description?: string;
-
+	image?: string;
+	frontmatter: {},
+	robots?: boolean;
 }
 
-const { title = 'My Astro Blog' , description = "Blog project in Astro" } = Astro.props as Props;
+const {
+	title = 'My Astro Blog',
+	description = "Blog project in Astro",
+	image,
+	frontmatter,
+	robots
+} = Astro.props as Props;
 ---
 
 <html lang="en">
@@ -19,6 +28,8 @@ const { title = 'My Astro Blog' , description = "Blog project in Astro" } = Astr
 		<meta name="generator" content={Astro.generator} />
 		<meta name= "description" content={description} />
 		<title>{title}</title>
+		<Seo {title} {description} url={Astro.url} {image} {frontmatter} {robots} />
+
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Permanent+Marker&display=swap" rel="stylesheet">

@@ -1,14 +1,15 @@
 ---
+import { getCollection, CollectionEntry } from 'astro:content';
 import { slugify, formatBlogPosts } from '../../js/utils';
 
 import MainLayout from "../../layouts/MainLayout.astro";
 
 
-const allPosts = await Astro.glob("../blog/*.md");
-const formattedPosts = formatBlogPosts(allPosts);
+const allPosts = await getCollection("blog");
+const formattedPosts: CollectionEntry<"blog">[] = formatBlogPosts(allPosts)
 
 const allCategories = [
-	... new Set( formattedPosts.map((post) => post.frontmatter.category )
+	... new Set( formattedPosts.map((post) => post.data.category )
 )]
 
 const CategoriesLinks = allCategories.map((category) => slugify(category))

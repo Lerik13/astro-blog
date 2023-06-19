@@ -4,20 +4,20 @@ import { Image } from '@astrojs/image/components';
 import { slugify, formatDate } from "../js/utils";
 import Link from './Link.astro';
 
-const { frontmatter, url, tagType } = Astro.props;
+const { data, url, tagType } = Astro.props;
 
 const Tag = tagType || 'h2';
 
-const { title, date, author, image, description, category } = frontmatter;
+const { title, date, author, image, description, category } = data;
 ---
 
-<!-- <pre>{JSON.stringify(frontmatter, null, 2)}</pre> -->
+<!-- <pre>{JSON.stringify(data, null, 2)}</pre> -->
 
 <article class="card">
 	<small>
 		<a href={`/category/${slugify(category)}/`} class="badge">{category}</a>
 	</small>
-	<a href={url} aria-hidden="true" tabindex="-1">
+	<a href={`/blog/${url}/`} aria-hidden="true" tabindex="-1">
 		<Image
 			src={image.src}
 			alt={image.alt}
@@ -31,7 +31,7 @@ const { title, date, author, image, description, category } = frontmatter;
 	<div class="content">
 		<div>
 			<Tag class="h3">
-				<a href={url}>{title}</a>
+				<a href={`/blog/${url}/`}>{title}</a>
 			</Tag>
 			<small>
 				by <a href={`/author/${slugify(author)}/`}>{author}</a>
@@ -40,5 +40,5 @@ const { title, date, author, image, description, category } = frontmatter;
 				</div>
 		</div>
 		<p>{description}</p>
-		<Link href={url} style='secondary' text='Read Post'/>
+		<Link href={`/blog/${url}/`} style='secondary' text='Read Post'/>
 </article>

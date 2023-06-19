@@ -1,11 +1,14 @@
 ---
+import { getCollection, CollectionEntry } from 'astro:content';
+
 import MainLayout from "../layouts/MainLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import Link from '../components/Link.astro';
 
 import { formatBlogPosts } from '../js/utils';
-const allPosts = await Astro.glob("./blog/*.md");
-const formattedPosts = formatBlogPosts(allPosts, {
+
+const allPosts = await getCollection("blog");
+const formattedPosts: CollectionEntry<"blog">[] = formatBlogPosts(allPosts, {
 	filterOutDrafts: false,
 	filterOutFuturePosts: false,
 	sortByDate: false,
@@ -20,8 +23,8 @@ const formattedPosts = formatBlogPosts(allPosts, {
 			{
 				formattedPosts.map((post) => (
 					<PostCard
-						frontmatter={post.frontmatter}
-						url={post.url}
+						data={post.data}
+						url={post.slug}
 						tagType="h3"
 					/>
 				))

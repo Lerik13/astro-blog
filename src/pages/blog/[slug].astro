@@ -1,0 +1,79 @@
+---
+import { getCollection, CollectionEntry } from 'astro:content';
+
+import { slugify, formatDate, formatBlogPosts } from "../../js/utils";
+
+import { Image } from '@astrojs/image/components';
+import MainLayout from "../../layouts/MainLayout.astro";
+import CategoryCloud from '../../components/CategoryCloud.astro';
+import RelatedPosts from '../../components/RelatedPosts.astro';
+
+export async function getStaticPaths() {
+
+	const allPosts = await getCollection("blog");
+	const formattedPosts: CollectionEntry<"blog">[] = formatBlogPosts(allPosts);
+
+	return formattedPosts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post }
+	}))
+}
+
+interface Props {
+	post: CollectionEntry<"blog">;
+}
+const { post } = Astro.props;
+const { title, description, date, category, author, image } = post.data;
+const { Content } = await post.render();
+
+const allPosts = await getCollection("blog");
+const formattedPosts: CollectionEntry<"blog">[] = formatBlogPosts(allPosts, {sortByDate: false});
+
+const relatedPosts = formattedPosts
+	.filter((post) => post.data.category.toLowerCase() === category.toLowerCase() && post.data.title !== title)
+	.slice(0, 3)
+---
+
+<MainLayout {title} {description} image={image} data={post.data}>
+	<header>
+		<div class="container">
+			<small>
+				<a href={`/category/${slugify(category)}/`} class="badge">{category}</a>
+			</small>
+			<h1 class="h2">{title}</h1>
+			<p>
+				by <a href={`/author/${slugify(author)}/`}>{author}</a>
+				- {formatDate(date)}
+			</p>
+		</div>
+		<Image
+			src={image.src}
+			alt={image.alt}
+			width="1200"
+			height="600"
+			format="avif"
+			fit="cover"
+			aspectRatio="5:2"
+			class="hero-image"
+		/>
+	</header>
+	<div class="post-content">
+		<div class="content">
+			<Content />
+		</div>
+		<div class="sidebar">
+			<aside class="container" aria-label="Blog categories">
+				<h2 class="h3">Blog categories</h2>
+				<CategoryCloud />
+			</aside>
+			{
+				relatedPosts.length > 0 && (
+				<aside class="container" aria-label="Related posts">
+					<h2 class="h3">Related Posts</h2>
+					<RelatedPosts {relatedPosts} />
+				</aside>
+				)
+			}
+		</div>
+	</div>
+</MainLayout>

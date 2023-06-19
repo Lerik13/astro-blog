@@ -7,7 +7,7 @@ interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
-	frontmatter: {},
+	data: {},
 	robots?: boolean;
 }
 
@@ -15,7 +15,7 @@ const {
 	title = 'My Astro Blog',
 	description = "Blog project in Astro",
 	image,
-	frontmatter,
+	data,
 	robots
 } = Astro.props as Props;
 ---
@@ -28,7 +28,7 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta name= "description" content={description} />
 		<title>{title}</title>
-		<Seo {title} {description} url={Astro.url} {image} {frontmatter} {robots} />
+		<Seo {title} {description} url={Astro.url} {image} {data} {robots} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

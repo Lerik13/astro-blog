@@ -1,8 +1,10 @@
+import { getCollection, CollectionEntry } from 'astro:content';
+
 import rss from '@astrojs/rss';
 import { formatBlogPosts } from '../js/utils';
 
-const postImportResult = import.meta.glob('./blog/**/*.md', { eager: true });
-const posts = formatBlogPosts(Object.values(postImportResult));
+const postImportResult = await getCollection("blog");
+const posts = formatBlogPosts(postImportResult);
 
 export const get = () => rss({
 	stylesheet: '/rss/styles.xsl',
@@ -10,12 +12,12 @@ export const get = () => rss({
 	description: 'Blog app',
 	site: import.meta.env.SITE,
 	items: posts.map((post) => ({
-		link: post.url,
-		title: post.frontmatter.title,
-		pubDate: post.frontmatter.date,
-		description: post.frontmatter.description,
+		link: `/blog/${post.slug}`,
+		title: post.data.title,
+		pubDate: post.data.date,
+		description: post.data.description,
 		customData: `
-			<author>${post.frontmatter.author}</author>
+			<author>${post.data.author}</author>
 		`
 	}))
 })

@@ -1,19 +1,21 @@
 ---
+import { getCollection, CollectionEntry } from 'astro:content';
+
 import { slugify, formatBlogPosts } from '../../js/utils';
 
 import MainLayout from "../../layouts/MainLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 
 export async function getStaticPaths() {
-	const allPosts = await Astro.glob("../blog/*.md");
-	const formattedPosts = formatBlogPosts(allPosts);
+	const allPosts = await getCollection("blog");
+	const formattedPosts: CollectionEntry<"blog">[] = formatBlogPosts(allPosts)
 
 	const allAuthors = [
-		... new Set( formattedPosts.map((post) => post.frontmatter.author )
+		... new Set( formattedPosts.map((post) => post.data.author )
 	)]
 
 	return allAuthors.map((author) => {
-		const authorPosts = formattedPosts.filter((post) => post.frontmatter.author === author)
+		const authorPosts = formattedPosts.filter((post) => post.data.author === author)
 		return {
 			params: { author: slugify(author) },
 			props: {
@@ -24,8 +26,13 @@ export async function getStaticPaths() {
 	})
 }
 
+interface Props {
+	posts: CollectionEntry<"blog">[];
+	authorName: string;
+}
+
 const { author } = Astro.params;
-const { authorName, posts } = Astro.props;
+const { posts, authorName } = Astro.props;
 ---
 
 <MainLayout title={authorName}>
@@ -34,7 +41,7 @@ const { authorName, posts } = Astro.props;
 		<div class="post-container">
 			{
 				posts.map((post) => (
-					<PostCard frontmatter={post.frontmatter} url={post.url} />
+					<PostCard data={post.data} url={post.slug} />
 				))
 			}
 		</div>
